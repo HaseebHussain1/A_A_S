@@ -5,31 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use auth;
 
 use App\Adoption;
-
+use App\User;
+use Session;
 use App\Animal;
 class AdoptionController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+	
+	$this->middleware('role:admin,staff');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-     	//$animals=[];
-      $animals = Animal::paginate(2);
-	//foreach($animalsdbdata as $animal){
-	//if($animal->isadopted===0){
-	//$animals[]=['animalid'=>$animal->id,'name'=>$animal->name];
+     	
 
+	
+	$adoptions = Adoption::where('status','=','pending')->paginate(2);
+	//Session::flash('success', 'Email was sent');
+	return view('Adoptions.index', compact('adoptions'));
 
-//} 
-
-//}
-	return view('Animals.index', compact('animals'));
 
     }
 
@@ -51,14 +62,16 @@ class AdoptionController extends Controller
      */
     public function store(Request $request)
     {
-                            $adoption = new Adoption;
-	$adoption->userid = 1; 
-	$adoption->petid = 1;
+
+
+                           $adoption = new Adoption;
+	$adoption->userid = Auth::user()->first()->id; 
+	$adoption->petid = $request->input('petid');
 	$adoption->status = "pending";
 
 	// save the Vehicle object 
 	$adoption->save();
-	return redirect('Adoptions');
+	return redirect('Animals');
 	
     }
 
@@ -93,7 +106,54 @@ class AdoptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+	if($request->has('deny')){
+		$adoptions = Adoption::find($id);
+       
+		$adoptions->status='denide';
+	
+		$adoptions->save();
+		Session::flash('success', 'adoption denide');
+		return redirect('Adoptions');
+
+}	elseif($request->has('accept')){
+		$adoptions = Adoption::where('id','=',$id)->first();
+
+		if ($adoptions->animal()->first()->isadopted==0){
+			$adoptions->status='accepted';
+			$adoptions->save();
+			$animal=$adoptions->animal()->first();
+			$animal->isadopted=1;
+			$animal->save();
+	
+			$adoptionsd=$animal->adoptions;
+			$a='';
+			foreach($adoptionsd as $adoption){
+				if ($adoption->id!=$adoptions->id){
+	
+					$adoption->status='denide';
+	
+					$adoption->save();
+				}
+	
+	
+
+			}
+			Session::flash('success', 'Email was sent');
+			return redirect('Adoptions');
+
+		}
+		elseif($adoptions->animal()->first()->isadopted==1){
+			Session::flash('error', 'animal already adopted');
+			$adoptions->status='denide';
+			$adoptions->save();
+			return redirect('Adoptions');
+
+
+		}
+	}
+
+
+
     }
 
     /**

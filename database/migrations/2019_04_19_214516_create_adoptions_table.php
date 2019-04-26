@@ -19,7 +19,7 @@ class CreateAdoptionsTable extends Migration
 	$table->bigInteger('petid')->unsigned();
 	$table->enum('status',['denide','accepted','pending']);
         $table->timestamps();
-
+	$table->unique(['userid', 'petid']);
 	$table->foreign('userid')->references('id')->on('users')->onDelete('cascade');
 
 $table->foreign('petid')->references('id')->on('animals')->onDelete('cascade');

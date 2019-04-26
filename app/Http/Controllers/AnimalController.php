@@ -15,10 +15,19 @@ class AnimalController extends Controller
     public function index()
     {
       //  $this->middleware('auth');
-        $animals = Animal::all()->toArray(); 
+        $animals = Animal::where('isadopted','=','0')->paginate(2); 
 	return view('Animals.index', compact('animals')); 
     }
 
+
+  public function adminindex()
+    {
+      //  $this->middleware('auth');
+	//$user= User::all()->first()->adoptions->first()->animal;
+        $animals = Animal::paginate(2);//->first()->succsesfuladoption()->first()->user;
+	//return $animals;
+	return view('Animals.adminindex', compact('animals')); 
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -107,7 +116,7 @@ $animal->description = $request->input('description');
 $animal->updated_at = now();
 
 $animal->save();
-return redirect('Animals')->with('success','animal has been updated');
+return redirect('users/Animals')->with('success','animal has been updated');
 
     }
 
@@ -121,6 +130,6 @@ return redirect('Animals')->with('success','animal has been updated');
     {
          $animal = Animal::find($id);
 	$animal->delete();
-	return redirect('Animals')->with('success','animal has been deleted'); 
+	return redirect('users/Animals')->with('success','animal has been deleted'); 
     }
 }

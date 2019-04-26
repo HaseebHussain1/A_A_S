@@ -14,7 +14,8 @@
 <th scope="col">Brand</th>
 <th scope="col">Daily_Rate</th>
 <th scope="col">is adopted</th>
-<th scope="col"  colspan="4">Action</th>
+<th scope="col">owner</th>
+
 </tr>
 </thead>
 <tbody>
@@ -27,28 +28,18 @@
 @if ($animal['isadopted']===1)
 <td>
 is adopted 
+
+ 
+</td>
+<td>
+{{$animal->succsesfuladoption()->first()->user['name']}}
 </td>
 @else
 <td>
 not adopted 
 </td>
 @endif
-<td ><a href="{{action('AnimalController@show', $animal['id'])}}" class="btn btn- primary ">Details</a></td>
-<td ><a href="{{action('AnimalController@edit', $animal['id'])}}" class="btn btn- warning">Edit</a></td>
-<td >
-<form action="{{action('AnimalController@destroy', $animal['id'])}}" method="post"> @csrf
-<input name="_method" type="hidden" value="DELETE">
-<button class="btn btn-danger" type="submit"> Delete</button>
-</form>
-</td>
-<td>
-<form class="form-horizontal" method="POST" 
-action="{{url('Adoptions') }}" > vvv
-@csrf
-<input type="hidden" name="petid" value="{{$animal['id']}}" /> 
-<input type="submit" class="btn btn-primary" /> 
-</form> 
-</td>
+
 </tr> 
 @endforeach
 </tbody>
