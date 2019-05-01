@@ -31,9 +31,13 @@
 <div class="col-md-8">
 <label>animal Type</label>
 <select name="type" value="{{ $animal->type }}">
-<option value="car">Car</option>
-<option value="truck">Truck</option>
-</select>
+ <option value="cat">Cat</option>
+ <option value="dog">Dog</option> 
+<option value="bear">Bear</option> 
+<option value="lion">Lion</option> 
+<option value="mouse">Mouse</option> 
+<option value="snake">snake</option> 
+</select> 
 </div>
 <div class="col-md-8">
 <label >date of birth</label>

@@ -16,13 +16,12 @@ class CreateAnimalsTable extends Migration
         Schema::create('animals', function (Blueprint $table) {
         $table->bigIncrements('id');
 	$table->string('name');
-	$table->integer('age');
-	$table->enum('type',['car', 'truck']);
+	$table->enum('type',['cat', 'dog','bear','lion','mouse','snake']);
 	$table->text('description');
 	$table->boolean('isadopted');
         $table->timestamps();
 	$table->string('image', 256)->nullable(); 
-	$table->date('dob')->default('1997-10-07'); 
+	$table->date('dob'); 
         });
     }
 

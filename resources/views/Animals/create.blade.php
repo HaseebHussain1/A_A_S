@@ -35,8 +35,12 @@ action="{{url('staff/Animals') }}"    enctype="multipart/form-data">
   <div class="col-md-8"> 
 <label>animal type</label>
 <select name="type" > 
- <option value="car">Car</option>
- <option value="truck">Truck</option> 
+ <option value="cat">Cat</option>
+ <option value="dog">Dog</option> 
+<option value="bear">Bear</option> 
+<option value="lion">Lion</option> 
+<option value="mouse">Mouse</option> 
+<option value="snake">snake</option> 
 </select> 
 </div> 
 <div class="col-md-  8"> 
