@@ -4,7 +4,7 @@
 <div class="container">
         <h5 class="section-title h1">{{$animal->name}}</h5>
         <div class="row">
-
+dd
 @if ($errors->any()) 
 <div class="alert alert-danger col-12"> 
  <ul> @foreach ($errors->all() as $error) 
@@ -21,7 +21,7 @@
 <p>{{ \Session::get('success') }}</p>
 </div><br /> @endif
 <!---->
-            <!-- animal -->
+            <!-- Team member -->
             <div class="col-12">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
@@ -37,14 +37,10 @@
 							dob: {{$animal['dob']}}
 				</br> {{$animal->description}}
 </p>
-                                    <a href="{{action('AnimalController@index')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> back to list</a>
+                                    <a href="{{action('AnimalController@staffindex')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> back to list</a>
 
-<form class="form-horizontal" method="POST" 
-action="{{url('staff/Adoptions') }}" > vvv
-@csrf
-<input type="hidden" name="petid" value="{{$animal['id']}}" /> 
-<input type="submit" value="adopt" class="btn btn-primary" /> 
-</form> 
+  <a href="{{action('AnimalController@edit', $animal['id'])}}" class="btn btn- warning">Edit</a>
+		<a href="{{action('AnimalController@destroy', $animal['id'])}}" class="btn btn- warning">Edit</a>
 
                                 </div>
                             </div>

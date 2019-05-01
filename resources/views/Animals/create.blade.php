@@ -6,50 +6,53 @@
     <div class="row justify-content-center"> 
 <div class="col-md-10 "> 
         <div class="card"> 
-   <di v class="card-header">Create an new vehicle</div> 
+   <di v class="card-header">Add animal</div> 
 <!--   display the errors --> 
 @if ($errors->any()) 
-<div class="alert alert-danger"> 
+<div class="alert alert-danger col-12"> 
  <ul> @foreach ($errors->all() as $error) 
  <li>{{ $error }}</li> @endforeach
  </ul> 
 </div><br />
 @endif
- <!-- display the success status --> 
+@if (\Session::has('error')) 
+<div class="alert alert-danger col-12"> 
+<p>{{ \Session::get('error') }}</p>
+</div><br /> @endif
 @if (\Session::has('success')) 
-<div class="alert alert-success"> 
+<div class="alert alert-success col-12"> 
 <p>{{ \Session::get('success') }}</p>
 </div><br /> @endif
    <!-- define the form --> 
  <div class="card-body"> 
 <form class="form-horizontal" method="POST" 
-action="{{url('Animals') }}"    enctype="multipart/form-data"> 
+action="{{url('staff/Animals') }}"    enctype="multipart/form-data"> 
 @csrf
    <div class="col-md-8"> 
-    <label >Vehicle Register Number</label>
-<input type="text" name="name" placeholder="Vehicle registernumber" /> 
+    <label >pet name</label>
+<input type="text" name="name" placeholder="name" /> 
     </div> 
   <div class="col-md-8"> 
-<label>vehicle Type</label>
+<label>animal type</label>
 <select name="type" > 
  <option value="car">Car</option>
  <option value="truck">Truck</option> 
 </select> 
 </div> 
 <div class="col-md-  8"> 
-<label >Daily-rate</label> 
-<input type="text" name="age" placeholder="Daily-rate" /> 
+<label >Date of birth</label> 
+<input type="date" name="dob" /> 
 </div> 
 <div class="col-md-  8"> 
 <label >Description</label> 
-<textarea rows="4" cols="50" name="description"> Notes about the vehicle </textarea> 
+<textarea rows="4" cols="50" name="description"> Animal details </textarea> 
 </div> 
 <div class="col-md-  8"> 
 <label>Image</label> 
 <input type="file" name="image" placeholder="Image file" /> 
 </div> 
 <div class="col-md-  6 col-md-  offset-4"> 
-<input type="submit" class="btn btn-primary" /> 
+<input type="submit" value="add animal" class="btn btn-primary" /> 
 <input type="reset" class="btn btn-primary" /> 
 </div> 
 </form> 

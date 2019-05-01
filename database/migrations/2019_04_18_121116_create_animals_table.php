@@ -21,6 +21,8 @@ class CreateAnimalsTable extends Migration
 	$table->text('description');
 	$table->boolean('isadopted');
         $table->timestamps();
+	$table->string('image', 256)->nullable(); 
+	$table->date('dob')->default('1997-10-07'); 
         });
     }
 

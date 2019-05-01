@@ -22,12 +22,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+   
 
     /**
      * Create a new controller instance.
@@ -47,14 +42,14 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
 	if(Auth::user()->first()->role=='admin'){
 
-        return redirect('admin/Animals');
+        return redirect('admin/allusers');
 
 	}elseif(Auth::user()->first()->role=='user'){
 
-		return redirect('Animals');
+		return redirect('users/Animals');
 	}elseif(Auth::user()->first()->role=='staff'){
 
-		return redirect('admin/Animals');
+		return redirect('staff/Adoptions');
 	}
 	
     }

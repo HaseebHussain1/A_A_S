@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
 <div class="col-md-12 ">
 <div class="card">
-<div class="card-header">pending adoptions</div>
+<div class="card-header">all adoptions</div>
 @if ($errors->any()) 
 <div class="alert alert-danger"> 
 dddd
@@ -30,7 +30,6 @@ dddd
 <th scope="col">animal name</th>
 <th scope="col">animal id</th>
 <th scope="col">users name</th>
-<th scope="col"  colspan="4">Action</th>
 </tr>
 </thead>
 <tbody>
@@ -41,33 +40,7 @@ dddd
 <td>{{$adoption->animal['name']}}</td>
 <td>{{$adoption->animal['id']}}</td>
 <td>{{$adoption->user['name']}}</td>
-<td >
 
-
-<form class="form-horizontal" method="POST" action="{{ action('AdoptionController@update',$adoption['id']) }} " enctype="multipart/form-data" >
-@method('PATCH')
-@csrf
-<input type="hidden" name="accept"/>
-
-<input type="submit" value="Accept" class="btn btn-primary" />
-</form>
-
-
-</td>
-
-<td >
-
-
-<form class="form-horizontal" method="POST" action="{{ action('AdoptionController@update',$adoption['id']) }} " enctype="multipart/form-data" >
-@method('PATCH')
-@csrf
-<input type="hidden" name="deny"/>
-
-<input type="submit" value="Deny" class="btn btn-primary" />
-</form>
-
-
-</td>
 </tr> 
 @endforeach
 </tbody>

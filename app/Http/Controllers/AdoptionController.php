@@ -22,9 +22,10 @@ class AdoptionController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
 	
-	$this->middleware('role:admin,staff');
+	$this->middleware('role:staff', ['only'=>['index','alladoptions','update']]);
+	$this->middleware('role:user', ['only'=>['store']]);
     }
     /**
      * Display a listing of the resource.
@@ -32,27 +33,28 @@ class AdoptionController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    public function index()// staff
     {
      	
 
 	
 	$adoptions = Adoption::where('status','=','pending')->paginate(2);
-	//Session::flash('success', 'Email was sent');
 	return view('Adoptions.index', compact('adoptions'));
 
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+   public function alladoptions()//staff
     {
-        //
+     	
+
+	
+	$adoptions = Adoption::paginate(2);
+	return view('Adoptions.alladoptions', compact('adoptions'));
+
+
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -64,38 +66,24 @@ class AdoptionController extends Controller
     {
 
 
-                           $adoption = new Adoption;
+if(Adoption::where('userid','=',Auth::user()->first()->id)->where('petid','=',$request->input('petid'))->first()===null ){
+  $adoption = new Adoption;
 	$adoption->userid = Auth::user()->first()->id; 
 	$adoption->petid = $request->input('petid');
 	$adoption->status = "pending";
 
-	// save the Vehicle object 
+	// save the Animal object 
 	$adoption->save();
-	return redirect('Animals');
+	return redirect('staff/Animals');
+
+}else{
+return redirect()->back()->with('error','you have already adopted ');
+}
+                         
 	
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -104,7 +92,7 @@ class AdoptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id)//staff
     {
 	if($request->has('deny')){
 		$adoptions = Adoption::find($id);
@@ -113,7 +101,7 @@ class AdoptionController extends Controller
 	
 		$adoptions->save();
 		Session::flash('success', 'adoption denide');
-		return redirect('Adoptions');
+		return redirect('staff/Adoptions');
 
 }	elseif($request->has('accept')){
 		$adoptions = Adoption::where('id','=',$id)->first();
@@ -126,7 +114,7 @@ class AdoptionController extends Controller
 			$animal->save();
 	
 			$adoptionsd=$animal->adoptions;
-			$a='';
+			
 			foreach($adoptionsd as $adoption){
 				if ($adoption->id!=$adoptions->id){
 	
@@ -138,15 +126,15 @@ class AdoptionController extends Controller
 	
 
 			}
-			Session::flash('success', 'Email was sent');
-			return redirect('Adoptions');
+			Session::flash('success', 'Adoptions sucsesful');
+			return redirect('staff/Adoptions');
 
 		}
 		elseif($adoptions->animal()->first()->isadopted==1){
 			Session::flash('error', 'animal already adopted');
 			$adoptions->status='denide';
 			$adoptions->save();
-			return redirect('Adoptions');
+			return redirect('staff/Adoptions');
 
 
 		}
@@ -156,14 +144,4 @@ class AdoptionController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

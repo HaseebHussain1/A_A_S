@@ -22,22 +22,33 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::resource('users/Animals','AnimalController');
 
-Route::resource('Adoptions','AdoptionController');
+//Route::resource('Adoptions','AdoptionController');
 
 
-Route::get('users/Animals', 'AnimalController@index');/* user*/
+Route::get('users/Animals', 'AnimalController@index');
 Route::get('users/Animals/{Animal}', 'AnimalController@show');
+Route::get('users/Adoptions/{User}', 'AnimalController@showuseradoptions');
+Route::post('users/Adoptions', 'AdoptionController@store');
 
 
 Route::match(['put','patch'],'staff/Animals/{Animal}', 'AnimalController@update');
-Route::get('staff/Animals', 'AnimalController@adminindex');
+Route::get('staff/Animals', 'AnimalController@staffindex');// s4
 Route::get('staff/Animals/create', 'AnimalController@create');
-Route::delete('staff/Animals/{Animal}', 'AnimalController@destroy');
-Route::get('staff/Animals/{Animal}/edit ', 'AnimalController@edit');/* staff*/
+Route::get('staff/Animals/{Animal}', 'AnimalController@staffshow');
+Route::delete('staff/Animals/{Animal}', 'AnimalController@destroy');// not being used yet
+Route::get('staff/Animals/{Animal}/edit', 'AnimalController@edit');
+Route::post('staff/Animals', 'AnimalController@store');
 
 
-Route::get('staff/Adoptions ', 'AnimalController@edit');
+Route::match(['put','patch'],'staff/Adoptions{Adoption}', 'AdoptionController@update');
+Route::get('staff/Adoptions', 'AdoptionController@index');//s1
 
+
+Route::get('staff/alladoptions', 'AdoptionController@alladoptions');
+
+Route::get('logout', 'AdoptionController@index');
+Route::get('admin/allusers', 'UserController@showallusers');
+Route::patch('admin/updateuser/{User}', 'UserController@changeusertype');
 /*
 /users/animals
 /users/animals/id

@@ -18,13 +18,16 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+	
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+		Aston animal Santuary
+                    
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -34,13 +37,25 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
 			@guest
-	test
+	
 			@else
-			@if (Auth::user()->role =="admin")
-			<li class="nav-item">
-                                <a class="nav-link" href="{{ url('Animals') }}">animals</a>
-                            </li>
-			 @endif
+
+	@if(Auth::user()->role=='user')
+                        <a class="nav-link" href="{{ url('users/Animals') }}">animals</a>
+			<a class="nav-link" href="{{action('AnimalController@showuseradoptions', Auth::user()->id)}}">  myadoptions</a>
+			@endif 
+			@if(Auth::user()->role=='staff')
+				  <a class="nav-link" href="{{ url('staff/Adoptions') }}">pending adoptions</a>
+				<a class="nav-link" href="{{url('staff/Animals')}}">  All animals</a>
+				<a class="nav-link" href="{{url('staff/alladoptions')}}">  All adoptions</a>
+				<a class="nav-link" href="{{action('AnimalController@create')}}">  create animal</a>
+	@endif 
+			@if(Auth::user()->role=='admin')
+			<a class="nav-link" href="{{ url('admin/allusers') }}">  all users</a>
+				
+
+@endif
+			
 			@endguest
                     </ul>
 
